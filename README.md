@@ -5,8 +5,8 @@
     - [Components](#components)
     - [Target Production Model](#target-production-model)
     - [Simulated Demo Model](#simulated-demo-model)
+  - [Native Snowflake Monitoring vs Chronosphere Capabilities](#native-snowflake-monitoring-vs-chronosphere-capabilities)
   - [Architecture](#architecture)
-
 
 ## Overview
 This demo simulates exporting metrics from Snowflake and sending them into the Chronosphere Observability Platform using OpenTelemetry Collector.
@@ -24,7 +24,7 @@ Steps:
 | Real Component       | Simulated Substitute                         |
 |----------------------|----------------------------------------------|
 | Snowflake            | Python script generating mock metrics        |
-| OTel Collector       | OTel Collector (Docker)                      |
+| OTel Collector       | OTel Collector container                     |
 | Chronosphere         | Logging exporter (prints to console)         |
 
 ### <center>Target Production Model
@@ -32,6 +32,19 @@ Steps:
 
 ### <center>Simulated Demo Model
 ![integration](./diagrams/demo-integration.png)
+
+## Native Snowflake Monitoring vs Chronosphere Capabilities
+
+| Feature                    | Snowflake Monitoring                | Monitoring via Chronosphere               |
+|----------------------------|-------------------------------------|-------------------------------------------|
+| Unified Observability      | Limited to Snowflake                | Integrates with other systems             |
+| Custom Dashboards          | Predefined, less flexible           | Highly customizable                       |
+| Query-Level Insights       | Available                           | Available with detailed metrics           |
+| Alerting and Notifications | Basic                               | Advanced with custom rules                |
+| Scalability                | Good                                | Excellent for hybrid environments         |
+| Multi-Source Integration   | No                                  | Yes                                       |
+| Cost Optimization Metrics  | Limited                             | Extensive                                 |
+
 
 ## Architecture
 There are many ways to integrate Snowflake with Chronosphere's Telemetry Pipeline and Observability Platform. This diagram shows some potential integration paths depending on a variety of use cases.
