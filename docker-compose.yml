@@ -1,0 +1,20 @@
+# Runs OpenTelemetry Collector with the above configuration and Python script volume-mounted
+version: '3.8'
+
+services:
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    container_name: otel-collector
+    volumes:
+      - ./otel-config.yml:/etc/otel/config.yml
+      - ./logs:/var/log
+    command: ["--config=/etc/otel/config.yml"]
+    restart: unless-stopped
+
+  metrics-generator:
+    image: python:3.10-slim
+    volumes:
+      - ./scripts/mock_snowflake_export.py:/mock_snowflake_export.py
+      - ./logs:/var/log
+    entrypoint: >
+      sh -c "python3 /mock_snowflake_export.py >> /var/log/mock_metrics.log"

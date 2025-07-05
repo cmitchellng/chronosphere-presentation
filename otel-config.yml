@@ -1,0 +1,26 @@
+# OpenTelemetry Collector config that uses exec receiver and logging exporter
+
+# Pulls logs from from mounted logs file using the filelog receiver
+receivers:
+  filelog:
+    include: ["/var/log/mock_metrics.log"]
+    start_at: beginning
+    operators:
+      - type: regex_parser
+        regex: '^snowflake_credits_used{warehouse="(?P<warehouse>[^"]+)"} (?P<value>[0-9.]+)$'
+        parse_to: body
+
+processors:
+  batch:
+
+# Export to command line
+exporters:
+  debug:
+    verbosity: detailed
+
+service:
+  pipelines:
+    logs:
+      receivers: [filelog]
+      processors: [batch]
+      exporters: [debug]
