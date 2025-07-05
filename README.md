@@ -1,5 +1,5 @@
-# Snowflake to Chronosphere Integration Demo
-- [Snowflake to Chronosphere Integration Demo](#snowflake-to-chronosphere-integration-demo)
+# Chronosphere + Snowflake Integration Demo
+- [Chronosphere + Snowflake Integration Demo](#chronosphere--snowflake-integration-demo)
   - [Overview](#overview)
   - [Potential Target vs Simulated Approach](#potential-target-vs-simulated-approach)
     - [Components](#components)
@@ -7,6 +7,7 @@
     - [Simulated Demo Model](#simulated-demo-model)
   - [Native Snowflake Monitoring vs Chronosphere Capabilities](#native-snowflake-monitoring-vs-chronosphere-capabilities)
   - [Architecture](#architecture)
+
 
 ## Overview
 This demo simulates exporting metrics from Snowflake and sending them into the Chronosphere Observability Platform using OpenTelemetry Collector.
