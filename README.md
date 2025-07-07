@@ -16,7 +16,7 @@ Since access to Snowflake and Chronosphere is unavailable, mock data is generate
 
 Steps:
 1. Python script generates fake Snowflake metrics and writes to a log file
-2. OTel Collector reads the log file, parses metric lines, and outputs structured logs
+2. OTel Collector reads the log file, parses metric lines, and outputs structured metrics
 3. `debug` exporter shows what would be sent to Chronosphere as output in the command line
 
 ## Potential Target vs Simulated Approach
@@ -26,7 +26,7 @@ Steps:
 |----------------------|----------------------------------------------|
 | Snowflake            | Python script generating mock metrics        |
 | OTel Collector       | OTel Collector container                     |
-| Chronosphere         | Logging exporter (prints to console)         |
+| Chronosphere         | Metrics exporter (prints to console)         |
 
 ### <center>Target Production Model
 ![integration](./diagrams/integration.png)

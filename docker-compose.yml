@@ -7,7 +7,7 @@ services:
     container_name: otel-collector
     volumes:
       - ./otel-config.yml:/etc/otel/config.yml
-      - ./logs:/var/log
+      - ./metrics:/var/metrics
     command: ["--config=/etc/otel/config.yml"]
     restart: unless-stopped
 
@@ -15,6 +15,6 @@ services:
     image: python:3.10-slim
     volumes:
       - ./scripts/mock_snowflake_export.py:/mock_snowflake_export.py
-      - ./logs:/var/log
+      - ./metrics:/var/metrics
     entrypoint: >
-      sh -c "python3 /mock_snowflake_export.py >> /var/log/mock_metrics.log"
+      sh -c "python3 /mock_snowflake_export.py >> /var/metrics/mock_metrics.out"
