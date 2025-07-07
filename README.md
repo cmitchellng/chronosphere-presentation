@@ -6,7 +6,12 @@
     - [Target Production Model](#target-production-model)
     - [Simulated Demo Model](#simulated-demo-model)
   - [Native Snowflake Monitoring vs Chronosphere Capabilities](#native-snowflake-monitoring-vs-chronosphere-capabilities)
+  - [Technical Challenges](#technical-challenges)
+    - [1. Transforming Structured Data into Telemetry Format](#1-transforming-structured-data-into-telemetry-format)
+    - [2. Running a Collector with Access to Snowflake](#2-running-a-collector-with-access-to-snowflake)
+    - [3. Scheduling, Rate-Limiting, and Data Freshness](#3-scheduling-rate-limiting-and-data-freshness)
   - [Architecture](#architecture)
+
 
 
 ## Overview
@@ -45,6 +50,47 @@ Steps:
 | Scalability                | Good                                | Excellent for hybrid environments         |
 | Multi-Source Integration   | No                                  | Yes                                       |
 | Cost Optimization Metrics  | Limited                             | Extensive                                 |
+
+## Technical Challenges
+
+### 1. Transforming Structured Data into Telemetry Format
+**Challenge**:
+Chronosphere expects certain telemetry in an OTLP or Prometheus format. Snowflake doesn’t emit native OTLP or Prometheus metrics for certain data.
+
+**Details**:
+Some of Snowflake's data is tabular; converting it to time-series metrics with dimensions/labels will require additional logic.
+- E.g., transforming:
+  
+  `SELECT warehouse_name, avg(credits_used) FROM ...`
+
+  into:
+
+  `snowflake_credits_used{warehouse="analytics_wh"} 41.2`
+
+**Impact**:
+May require custom ETL logic, scheduled Snowflake tasks, or use of Chronosphere's telemetry pipeline to extract and reshape this data.
+
+### 2. Running a Collector with Access to Snowflake
+**Challenge**:
+While Snowflake provides the option for an OTel Collector internally, additional setup of an external OTel or Chronosphere collector may be necessary depending on configuration.
+
+**Details**:
+
+When using an external collector one must:
+- Run a collector in your own infrastructure
+- Securely authenticate to Snowflake via OAuth/keys
+- Schedule polling without overloading query quotas
+
+### 3. Scheduling, Rate-Limiting, and Data Freshness
+**Challenge**:
+Deciding how frequently to extract and send metrics
+
+**Details**:
+Snowflake’s data is not real-time by nature, as it is generally updated every X minutes. Some things to keep in mind:
+- Needs careful time-windowing and deduplication
+- Hitting Snowflake rate limits or warehouse costs
+- Sending stale or duplicated data
+
 
 
 ## Architecture
